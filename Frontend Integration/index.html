@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat GPT with Java Integration</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+            background-color:  rgb(211, 181, 181);
+            width: 50%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        h1{
+            text-align: center;
+        }
+        
+        input[type="text"], #content {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            /* background-color: #f0f0f0; */
+        }
+        button, select, #inputField{
+            display: block;
+            margin: auto;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+        }
+
+        #output{
+            margin: auto;
+            line-height: 2.0;
+            font-size: 18px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <h1>Content Generation</h1>
+    
+    <select name="content" id="content" onchange="content()">
+        <option value="Shayari">Shayari</option>
+        <option value="Joke">Joke</option>
+        <option value="Story">Story</option>
+        <option value="Quote">Quote</option>
+    </select>
+    <br>
+
+    <input type="text" id="inputField" placeholder="Enter your input">
+    <button onclick="fetchData()">Submit</button>
+    <div id="output"></div>
+
+    <script>
+
+        let contentInput=document.querySelector("#content").value.toLowerCase();
+        
+        function content(){
+            let content=document.querySelector("#content").value
+            
+            contentInput=content.toLowerCase();
+            console.log(contentInput);
+        }
+        // content.add
+
+
+        async function fetchData() {
+            
+            var input = document.getElementById('inputField').value;
+
+            let ans="write a "+contentInput+" on "+input;
+            // console.log(ans)
+
+            var apiUrl = `http://localhost:8888/quote/chat?prompt=${ans}`;
+            console.log(apiUrl)
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                // console.log(data);
+
+                displayOutput(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayOutput(data) {
+            var outputDiv = document.getElementById('output');
+
+            outputDiv.innerHTML = '<h3>Output:</h3>' + JSON.stringify(data);
+        }
+    </script>
+    
+</body>
+</html>
